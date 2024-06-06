@@ -64,6 +64,8 @@ jobs:
             --federated-credential-provider "github" `
             --tenant-id "$Env:AZURE_TENANT_ID" --debug
           echo 'Login successful.'
+          echo 'Get list of available subscriptions:'
+          az account subscription list
           echo 'Trying to set subscription...'
           az account set --subscription ${{ env.AZURE_SUBSCRIPTION_ID }}
         shell: pwsh
