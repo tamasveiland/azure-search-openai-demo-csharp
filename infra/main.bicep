@@ -287,6 +287,17 @@ module keyVaultSecrets 'core/security/keyvault-secrets.bicep' = {
   }
 }
 
+module virtualNetwrk 'core/network/vnet.bicep' = {
+  name: 'vnet'
+  scope: resourceGroup
+  params: {
+    virtualNetworkName: 'vnet-${resourceToken}'
+    subnetName: 'privateEndpointSubnet'
+    location: location
+    tags: updatedTags
+  }
+}
+
 // Container apps host (including container registry)
 module containerApps 'core/host/container-apps.bicep' = {
   name: 'container-apps'
