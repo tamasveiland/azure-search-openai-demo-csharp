@@ -287,7 +287,7 @@ module keyVaultSecrets 'core/security/keyvault-secrets.bicep' = {
   }
 }
 
-module virtualNetwrk 'core/network/vnet.bicep' = {
+module virtualNetwork 'core/network/vnet.bicep' = {
   name: 'vnet'
   scope: resourceGroup
   params: {
@@ -296,6 +296,20 @@ module virtualNetwrk 'core/network/vnet.bicep' = {
     location: location
     tags: updatedTags
   }
+}
+
+module privateDnsStorage 'core/network/private-dns-zone.bicep' = {
+  name: 'privateEndpoint'
+  scope: resourceGroup
+  params: {
+    privateDnsZoneName: 'privatelink.blob.core.windows.net'
+    vnetId: virtualNetwork.outputs.virtualNetworkId
+    tags: updatedTags
+  }
+
+  dependsOn: [
+    virtualNetwork
+  ]
 }
 
 // Container apps host (including container registry)
