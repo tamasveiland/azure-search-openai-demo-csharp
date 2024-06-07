@@ -30,3 +30,5 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-09-01' = {
     ]
   }
 }
+
+output virtualNetworkId string = virtualNetwork.id
