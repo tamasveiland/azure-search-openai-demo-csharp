@@ -1,3 +1,4 @@
+name: Provision Infra & Deploy App
 on:
   workflow_dispatch:
     inputs:
