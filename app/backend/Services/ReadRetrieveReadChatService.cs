@@ -16,10 +16,13 @@ public class ReadRetrieveReadChatService
     private readonly IComputerVisionService? _visionService;
     private readonly TokenCredential? _tokenCredential;
 
+    private readonly ILogger<ReadRetrieveReadChatService> _logger;
+
     public ReadRetrieveReadChatService(
         ISearchService searchClient,
         OpenAIClient client,
         IConfiguration configuration,
+        ILogger<ReadRetrieveReadChatService> logger,
         IComputerVisionService? visionService = null,
         TokenCredential? tokenCredential = null)
     {
@@ -54,6 +57,7 @@ public class ReadRetrieveReadChatService
         _configuration = configuration;
         _visionService = visionService;
         _tokenCredential = tokenCredential;
+        _logger = logger;
     }
 
     public async Task<ChatAppResponse> ReplyAsync(
@@ -111,6 +115,7 @@ standard plan AND dental AND employee benefit.
         else
         {
             documentContents = string.Join("\r", documentContentList.Select(x =>$"{x.Title}:{x.Content}"));
+            _logger.LogInformation("Document contents: {documentContents}", documentContents);
         }
 
         // step 2.5
