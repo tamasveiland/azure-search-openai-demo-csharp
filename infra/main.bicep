@@ -341,6 +341,7 @@ module storage 'core/storage/storage-account.bicep' = {
         ]
         subnetResourceId: virtualNetwork.outputs.subnet0Id
         service: 'blob'
+        isManualConnection: false
         tags: {
           Environment: 'dev'
         }
