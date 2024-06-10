@@ -298,6 +298,30 @@ module virtualNetwork 'core/network/vnet.bicep' = {
   }
 }
 
+module storage 'core/storage/storage-account.bicep' = {
+  name: 'storage'
+  scope: storageResourceGroup
+  params: {
+    name: !empty(storageAccountName) ? storageAccountName : '${abbrs.storageStorageAccounts}${resourceToken}'
+    location: storageResourceGroupLocation
+    tags: updatedTags
+    publicNetworkAccess: 'Enabled'
+    sku: {
+      name: 'Standard_LRS'
+    }
+    deleteRetentionPolicy: {
+      enabled: true
+      days: 2
+    }
+    containers: [
+      {
+        name: storageContainerName
+        publicAccess: 'Blob'
+      }
+    ]
+  }
+}
+
 module privateDnsStorage 'core/network/private-dns-zone.bicep' = {
   name: 'privateEndpoint'
   scope: resourceGroup
@@ -310,6 +334,19 @@ module privateDnsStorage 'core/network/private-dns-zone.bicep' = {
   dependsOn: [
     virtualNetwork
   ]
+}
+
+module privateEndpointStorage 'core/network/private-endpoint.bicep' = {
+  name: 'privateEndpointStorage'
+  scope: resourceGroup
+  params: {
+    location: location
+    privateEndpointName: 'pe-${resourceToken}-storage'
+    privateDnsZoneId: privateDnsStorage.outputs.privateDnsZoneId
+    subnetId: virtualNetwork.outputs.subnet0Id
+    privateLinkServiceID: storage.outputs.id
+    tags: updatedTags
+  }
 }
 
 // Container apps host (including container registry)
@@ -515,30 +552,6 @@ module searchService 'core/search/search-services.bicep' = {
       name: searchServiceSkuName
     }
     semanticSearch: 'free'
-  }
-}
-
-module storage 'core/storage/storage-account.bicep' = {
-  name: 'storage'
-  scope: storageResourceGroup
-  params: {
-    name: !empty(storageAccountName) ? storageAccountName : '${abbrs.storageStorageAccounts}${resourceToken}'
-    location: storageResourceGroupLocation
-    tags: updatedTags
-    publicNetworkAccess: 'Enabled'
-    sku: {
-      name: 'Standard_LRS'
-    }
-    deleteRetentionPolicy: {
-      enabled: true
-      days: 2
-    }
-    containers: [
-      {
-        name: storageContainerName
-        publicAccess: 'Blob'
-      }
-    ]
   }
 }
 

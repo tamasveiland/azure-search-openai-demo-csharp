@@ -26,3 +26,5 @@ resource privateDnsZoneLink 'Microsoft.Network/privateDnsZones/virtualNetworkLin
     }
   }
 }
+
+output privateDnsZoneId string = privateDnsZone.id
