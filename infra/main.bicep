@@ -345,6 +345,7 @@ module privateEndpointStorage 'core/network/private-endpoint.bicep' = {
     privateDnsZoneId: privateDnsStorage.outputs.privateDnsZoneId
     subnetId: virtualNetwork.outputs.subnet0Id
     privateLinkServiceID: storage.outputs.id
+    groupId: 'blob'
     tags: updatedTags
   }
 }

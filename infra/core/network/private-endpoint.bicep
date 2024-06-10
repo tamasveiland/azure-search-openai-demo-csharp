@@ -16,6 +16,9 @@ param privateDnsZoneId string
 @description('Tags of the private endpoint.')
 param tags object
 
+@description('Group ID of the Private Link Service.')
+param groupId string
+
 
 resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
   name: privateEndpointName
@@ -31,7 +34,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
         properties: {
           privateLinkServiceId: privateLinkServiceID
           groupIds: [
-            'sqlServer'
+            groupId
           ]
         }
       }
