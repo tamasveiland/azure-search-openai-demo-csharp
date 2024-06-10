@@ -298,6 +298,20 @@ module virtualNetwork 'core/network/vnet.bicep' = {
   }
 }
 
+module privateDnsStorage 'core/network/private-dns-zone.bicep' = {
+  name: 'privateEndpoint'
+  scope: resourceGroup
+  params: {
+    privateDnsZoneName: 'privatelink.blob.core.windows.net'
+    vnetId: virtualNetwork.outputs.virtualNetworkId
+    tags: updatedTags
+  }
+
+  dependsOn: [
+    virtualNetwork
+  ]
+}
+
 module storage 'core/storage/storage-account.bicep' = {
   name: 'storage'
   scope: storageResourceGroup
@@ -319,14 +333,27 @@ module storage 'core/storage/storage-account.bicep' = {
         publicAccess: 'Blob'
       }
     ]
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          privateDnsStorage.outputs.privateDnsZoneId
+        ]
+        subnetResourceId: virtualNetwork.outputs.subnet0Id
+        service: 'blob'
+        tags: {
+          Environment: 'dev'
+        }
+      }
+    ]
   }
 }
 
-module privateDnsStorage 'core/network/private-dns-zone.bicep' = {
-  name: 'privateEndpoint'
+
+module privateDnsSearch 'core/network/private-dns-zone.bicep' = {
+  name: 'privateEndpointSearch'
   scope: resourceGroup
   params: {
-    privateDnsZoneName: 'privatelink.blob.core.windows.net'
+    privateDnsZoneName: 'privatelink.search.windows.net'
     vnetId: virtualNetwork.outputs.virtualNetworkId
     tags: updatedTags
   }
@@ -334,20 +361,6 @@ module privateDnsStorage 'core/network/private-dns-zone.bicep' = {
   dependsOn: [
     virtualNetwork
   ]
-}
-
-module privateEndpointStorage 'core/network/private-endpoint.bicep' = {
-  name: 'privateEndpointStorage'
-  scope: resourceGroup
-  params: {
-    location: location
-    privateEndpointName: 'pe-${resourceToken}-storage'
-    privateDnsZoneId: privateDnsStorage.outputs.privateDnsZoneId
-    subnetId: virtualNetwork.outputs.subnet0Id
-    privateLinkServiceID: storage.outputs.id
-    groupId: 'blob'
-    tags: updatedTags
-  }
 }
 
 // Container apps host (including container registry)
@@ -553,6 +566,18 @@ module searchService 'core/search/search-services.bicep' = {
       name: searchServiceSkuName
     }
     semanticSearch: 'free'
+    privateEndpoints: [
+      {
+        privateDnsZoneResourceIds: [
+          privateDnsSearch.outputs.privateDnsZoneId
+        ]
+        subnetResourceId: virtualNetwork.outputs.subnet0Id
+        service: 'searchService'
+        tags: {
+          Environment: 'dev'
+        }
+      }
+    ]
   }
 }
 
