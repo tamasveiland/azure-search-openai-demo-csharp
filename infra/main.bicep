@@ -236,7 +236,7 @@ module keyVaultSecrets 'core/security/keyvault-secrets.bicep' = {
       }
       {
         name: 'AzureStorageAccountEndpoint'
-        value: storage.outputs.privateEndpointDNS //storage.outputs.primaryEndpoints.blob
+        value: storage.outputs.primaryEndpoints.blob
       }
       {
         name: 'AzureStorageContainer'
@@ -395,7 +395,7 @@ module web './app/web.bicep' = {
     exists: webAppExists
     keyVaultName: keyVault.outputs.name
     keyVaultResourceGroupName: keyVaultResourceGroup.name
-    storageBlobEndpoint: storage.outputs.privateEndpointDNS //storage.outputs.primaryEndpoints.blob
+    storageBlobEndpoint: storage.outputs.primaryEndpoints.blob
     storageContainerName: storageContainerName
     searchServiceEndpoint: searchService.outputs.endpoint
     searchIndexName: searchIndexName
@@ -442,7 +442,7 @@ module function './app/function.bicep' = {
       AZURE_FORMRECOGNIZER_SERVICE_ENDPOINT: formRecognizer.outputs.endpoint
       AZURE_SEARCH_SERVICE_ENDPOINT: searchService.outputs.endpoint
       AZURE_SEARCH_INDEX: searchIndexName
-      AZURE_STORAGE_BLOB_ENDPOINT: storage.outputs.privateEndpointDNS //storage.outputs.primaryEndpoints.blob
+      AZURE_STORAGE_BLOB_ENDPOINT: storage.outputs.primaryEndpoints.blob
       AZURE_OPENAI_EMBEDDING_DEPLOYMENT: useAOAI ? azureEmbeddingDeploymentName : ''
       OPENAI_EMBEDDING_DEPLOYMENT: useAOAI ? '' : openAiEmbeddingDeployment
       AZURE_OPENAI_ENDPOINT: useAOAI ? azureOpenAi.outputs.endpoint : ''
@@ -824,7 +824,7 @@ output AZURE_SEARCH_SERVICE string = searchService.outputs.name
 output AZURE_SEARCH_SERVICE_ENDPOINT string = searchService.outputs.endpoint
 output AZURE_SEARCH_SERVICE_RESOURCE_GROUP string = searchServiceResourceGroup.name
 output AZURE_STORAGE_ACCOUNT string = storage.outputs.name
-output AZURE_STORAGE_BLOB_ENDPOINT string = storage.outputs.privateEndpointDNS //storage.outputs.primaryEndpoints.blob
+output AZURE_STORAGE_BLOB_ENDPOINT string = storage.outputs.primaryEndpoints.blob
 output AZURE_STORAGE_CONTAINER string = storageContainerName
 output AZURE_STORAGE_RESOURCE_GROUP string = storageResourceGroup.name
 output AZURE_TENANT_ID string = tenant().tenantId
