@@ -32,7 +32,7 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-04-01-
     }
     workloadProfiles: [
       {
-        name: 'ConsumptionManaged'
+        name: 'Consumption'
         workloadProfileType: 'Consumption'
       }
     ]
