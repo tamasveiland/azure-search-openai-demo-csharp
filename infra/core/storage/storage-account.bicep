@@ -121,8 +121,20 @@ module storage_privateEndpoints '../network/private-endpoint.bicep' = [
   }
 ]
 
+// // Get the private endpoint
+// resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-02-01' existing = if (!empty(privateEndpoints)) {
+//    name: storage_privateEndpoints[0].name ?? ''
+// }
+
+// // Get the private DNS zone group
+// resource privateDnsZoneGroup 'Microsoft.Network/privateDnsZoneGroups@2021-02-01' existing = if (!empty(privateEndpoints)) {
+//   name: storage_privateEndpoints[0].privateDnsZoneGroupName ?? ''
+// }
+
 output name string = storage.name
 output primaryEndpoints object = storage.properties.primaryEndpoints
+// output primaryPrivateEndpoint object = storage.properties.privateEndpointConnections[0].properties.
+output privateEndpointDNS string = 'https://${storage.name}.privatelink.blob.core.windows.net'
 output id string = storage.id
 
 // =============== //
