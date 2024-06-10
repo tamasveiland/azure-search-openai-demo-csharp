@@ -5,7 +5,10 @@ param virtualNetworkName string
 param location string
 
 @description('Name of the subnet')
-param subnetName string = 'privateEndpointSubnet'
+param subnet0Name string = 'privateEndpointSubnet'
+
+@description('Name of the subnet')
+param subnet1Name string = 'acaSubnet'
 
 @description('Tags for the virtual network')
 param tags object = {}
@@ -22,9 +25,15 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-09-01' = {
     }
     subnets: [
       {
-        name: subnetName
+        name: subnet0Name
         properties: {
           addressPrefix: '10.0.2.0/24'
+        }
+      }
+      {
+        name: subnet1Name
+        properties: {
+          addressPrefix: '10.0.3.0/24'
         }
       }
     ]
@@ -33,3 +42,4 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-09-01' = {
 
 output virtualNetworkId string = virtualNetwork.id
 output subnet0Id string = virtualNetwork.properties.subnets[0].id
+output subnet1Id string = virtualNetwork.properties.subnets[1].id

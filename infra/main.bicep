@@ -292,7 +292,8 @@ module virtualNetwork 'core/network/vnet.bicep' = {
   scope: resourceGroup
   params: {
     virtualNetworkName: 'vnet-${resourceToken}'
-    subnetName: 'privateEndpointSubnet'
+    subnet0Name: 'privateEndpointSubnet'
+    subnet1Name: 'acaSubnet'
     location: location
     tags: updatedTags
   }
@@ -348,7 +349,6 @@ module storage 'core/storage/storage-account.bicep' = {
   }
 }
 
-
 module privateDnsSearch 'core/network/private-dns-zone.bicep' = {
   name: 'privateEndpointSearch'
   scope: resourceGroup
@@ -374,6 +374,7 @@ module containerApps 'core/host/container-apps.bicep' = {
     containerRegistryResourceGroupName: !empty(containerRegistryResourceGroupName) ? containerRegistryResourceGroupName : resourceGroup.name
     location: location
     logAnalyticsWorkspaceName: monitoring.outputs.logAnalyticsWorkspaceName
+    acaSubnetId: virtualNetwork.outputs.subnet1Id
   }
 }
 

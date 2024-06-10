@@ -11,6 +11,9 @@ param daprEnabled bool = false
 @description('Name of the Log Analytics workspace')
 param logAnalyticsWorkspaceName string
 
+@description('Resource ID of the subnet where the managed environment will be deployed.')
+param acaSubnetId string
+
 resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-04-01-preview' = {
   name: name
   location: location
@@ -24,6 +27,9 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-04-01-
       }
     }
     daprAIInstrumentationKey: daprEnabled && !empty(applicationInsightsName) ? applicationInsights.properties.InstrumentationKey : ''
+    vnetConfiguration: {
+      infrastructureSubnetId: acaSubnetId
+    }
   }
 }
 
