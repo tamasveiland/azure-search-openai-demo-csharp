@@ -18,7 +18,6 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-04-01-
   name: name
   location: location
   tags: tags
-  kind: 'Managed'
   properties: {
     appLogsConfiguration: {
       destination: 'log-analytics'
@@ -33,7 +32,7 @@ resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-04-01-
     }
     workloadProfiles: [
       {
-        name: 'Consumption'
+        name: 'ConsumptionManaged'
         workloadProfileType: 'Consumption'
       }
     ]
