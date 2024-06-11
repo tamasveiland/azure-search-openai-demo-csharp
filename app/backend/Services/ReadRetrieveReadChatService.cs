@@ -65,6 +65,9 @@ public class ReadRetrieveReadChatService
         RequestOverrides? overrides,
         CancellationToken cancellationToken = default)
     {
+        _logger.LogTrace("ReplyAsync");
+        Console.WriteLine("ReployAsync");
+
         var top = overrides?.Top ?? 3;
         var useSemanticCaptions = overrides?.SemanticCaptions ?? false;
         var useSemanticRanker = overrides?.SemanticRanker ?? false;
