@@ -165,7 +165,6 @@ Don't put your answer between ```json and ```, return the json string directly. 
             var imagesTrace = string.Join("\r", images.Select(x => $"{x.Title}:{x.Url}"));
             _logger.LogTrace("Images: {imagesTrace}", imagesTrace);
 
-
             var collection = new ChatMessageContentItemCollection();
             collection.Add(new TextContent(prompt));
             foreach (var imageUrl in imageUrls)
@@ -203,6 +202,7 @@ You answer needs to be a json object with the following format.
                        cancellationToken: cancellationToken);
         var answerJson = answer.Content ?? throw new InvalidOperationException("Failed to get search query");
         var answerObject = JsonSerializer.Deserialize<JsonElement>(answerJson);
+        _logger.LogTrace("Answer: {answerJson}", answerJson);
         var ans = answerObject.GetProperty("answer").GetString() ?? throw new InvalidOperationException("Failed to get answer");
         var thoughts = answerObject.GetProperty("thoughts").GetString() ?? throw new InvalidOperationException("Failed to get thoughts");
 
