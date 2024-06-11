@@ -252,6 +252,8 @@ e.g.
             FollowupQuestions: followUpQuestionList ?? Array.Empty<string>(),
             Thoughts: new[] { new Thoughts("Thoughts", thoughts) });
 
+        Console.WriteLine($"Citation base url: {_configuration.ToCitationBaseUrl()}");
+
         var choice = new ResponseChoice(
             Index: 0,
             Message: responseMessage,
