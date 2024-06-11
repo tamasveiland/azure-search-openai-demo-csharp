@@ -12,6 +12,7 @@ using Azure.Search.Documents.Models;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using MinimalApi.Services;
 using NSubstitute;
 using Shared.Models;
@@ -46,7 +47,9 @@ public class ReadRetrieveReadChatServiceTest
         configuration["AzureStorageContainer"].Returns("northwindhealth");
         configuration["UseAOAI"].Returns("true");
 
-        var chatService = new ReadRetrieveReadChatService(documentSearchService, openAIClient, configuration);
+        ILogger<ReadRetrieveReadChatService> logger = Substitute.For<ILogger<ReadRetrieveReadChatService>>();
+
+        var chatService = new ReadRetrieveReadChatService(documentSearchService, openAIClient, configuration, logger);
 
         var history = new ChatMessage[]
         {
@@ -100,10 +103,13 @@ public class ReadRetrieveReadChatServiceTest
         configuration["AzureStorageAccountEndpoint"].Returns("https://northwindhealth.blob.core.windows.net/");
         configuration["AzureStorageContainer"].Returns("northwindhealth");
 
+        ILogger<ReadRetrieveReadChatService> logger = Substitute.For<ILogger<ReadRetrieveReadChatService>>();
+
         var chatService = new ReadRetrieveReadChatService(
             azureSearchService,
             openAIClient,
             configuration,
+            logger,
             azureComputerVisionService,
             azureCredential);
 

@@ -15,12 +15,14 @@ public class ReadRetrieveReadChatService
     private readonly IConfiguration _configuration;
     private readonly IComputerVisionService? _visionService;
     private readonly TokenCredential? _tokenCredential;
+    private readonly ILogger<ReadRetrieveReadChatService> _logger;
 
 
     public ReadRetrieveReadChatService(
         ISearchService searchClient,
         OpenAIClient client,
         IConfiguration configuration,
+        ILogger<ReadRetrieveReadChatService> logger,
         IComputerVisionService? visionService = null,
         TokenCredential? tokenCredential = null)
     {
@@ -53,6 +55,7 @@ public class ReadRetrieveReadChatService
 
         _kernel = kernelBuilder.Build();
         _configuration = configuration;
+        _logger = logger;
         _visionService = visionService;
         _tokenCredential = tokenCredential;
     }
@@ -114,6 +117,8 @@ standard plan AND dental AND employee benefit.
             documentContents = string.Join("\r", documentContentList.Select(x =>$"{x.Title}:{x.Content}"));
         }
 
+        _logger.LogTrace("Document contents: {documentContents}", documentContents);
+
         // step 2.5
         // retrieve images if _visionService is available
         SupportingImageRecord[]? images = default;
@@ -156,6 +161,11 @@ Don't put your answer between ```json and ```, return the json string directly. 
             var sasToken = await (_tokenCredential?.GetTokenAsync(tokenRequestContext, cancellationToken) ?? throw new InvalidOperationException("Failed to get token"));
             var sasTokenString = sasToken.Token;
             var imageUrls = images.Select(x => $"{x.Url}?{sasTokenString}").ToArray();
+
+            var imagesTrace = string.Join("\r", images.Select(x => $"{x.Title}:{x.Url}"));
+            _logger.LogTrace("Images: {imagesTrace}", imagesTrace);
+
+
             var collection = new ChatMessageContentItemCollection();
             collection.Add(new TextContent(prompt));
             foreach (var imageUrl in imageUrls)
