@@ -121,7 +121,7 @@ standard plan AND dental AND employee benefit.
         }
 
         _logger.LogTrace("Document contents: {documentContents}", documentContents);
-        Console.WriteLine("Document contents: {documentContents}", documentContents);
+        Console.WriteLine($"Document contents: {documentContents}");
 
         // step 2.5
         // retrieve images if _visionService is available
@@ -207,7 +207,7 @@ You answer needs to be a json object with the following format.
         var answerJson = answer.Content ?? throw new InvalidOperationException("Failed to get search query");
         var answerObject = JsonSerializer.Deserialize<JsonElement>(answerJson);
         _logger.LogTrace("Answer: {answerJson}", answerJson);
-        Console.WriteLine("Answer: {answerJson}", answerJson);
+        Console.WriteLine($"Answer: {answerJson}");
         var ans = answerObject.GetProperty("answer").GetString() ?? throw new InvalidOperationException("Failed to get answer");
         var thoughts = answerObject.GetProperty("thoughts").GetString() ?? throw new InvalidOperationException("Failed to get thoughts");
 
