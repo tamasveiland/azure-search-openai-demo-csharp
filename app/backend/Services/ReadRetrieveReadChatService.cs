@@ -199,6 +199,9 @@ You answer needs to be a json object with the following format.
             StopSequences = [],
         };
 
+        Console.WriteLine("");
+        Console.WriteLine("Get the answer...");
+
         // get answer
         var answer = await chat.GetChatMessageContentAsync(
                        answerChat,
@@ -206,7 +209,6 @@ You answer needs to be a json object with the following format.
                        cancellationToken: cancellationToken);
         var answerJson = answer.Content ?? throw new InvalidOperationException("Failed to get search query");
         var answerObject = JsonSerializer.Deserialize<JsonElement>(answerJson);
-        _logger.LogTrace("Answer: {answerJson}", answerJson);
         Console.WriteLine($"Answer: {answerJson}");
         var ans = answerObject.GetProperty("answer").GetString() ?? throw new InvalidOperationException("Failed to get answer");
         var thoughts = answerObject.GetProperty("thoughts").GetString() ?? throw new InvalidOperationException("Failed to get thoughts");
@@ -251,6 +253,13 @@ e.g.
             DataPointsImages: images?.Select(x => new SupportingImageRecord(x.Title, x.Url)).ToArray(),
             FollowupQuestions: followUpQuestionList ?? Array.Empty<string>(),
             Thoughts: new[] { new Thoughts("Thoughts", thoughts) });
+
+        Console.WriteLine("");
+        Console.WriteLine("Reference documents");
+        foreach (var doc in documentContentList)
+        {
+            Console.WriteLine($"Reference title: {doc.Title}");
+        }
 
         Console.WriteLine($"Citation base url: {_configuration.ToCitationBaseUrl()}");
 
