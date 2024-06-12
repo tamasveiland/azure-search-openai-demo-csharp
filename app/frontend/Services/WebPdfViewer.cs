@@ -6,6 +6,14 @@ public class WebPdfViewer(IDialogService dialog, ISnackbar snackbar) : IPdfViewe
 {
     public ValueTask ShowDocumentAsync(string name, string url)
     {
+        snackbar.Add(
+            $"Name: '{name}', url: {url}",
+            Severity.Info,
+            static options =>
+            {
+                options.ShowCloseIcon = true;
+                options.VisibleStateDuration = 10_000;
+            });
         Console.WriteLine($"WebPdfViewer.ShowDocumentAsync - name: {name}, url: {url}");
         var extension = Path.GetExtension(name);
         if (extension is ".pdf")
