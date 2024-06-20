@@ -43,6 +43,8 @@ param scmDoBuildDuringDeployment bool = true
 param use32BitWorkerProcess bool = false
 param healthCheckPath string = ''
 
+param virtualNetworkSubnetId string
+
 module functions 'appservice.bicep' = {
   name: '${name}-functions'
   params: {
@@ -74,6 +76,7 @@ module functions 'appservice.bicep' = {
     runtimeNameAndVersion: runtimeNameAndVersion
     scmDoBuildDuringDeployment: scmDoBuildDuringDeployment
     use32BitWorkerProcess: use32BitWorkerProcess
+    virtualNetworkSubnetId: virtualNetworkSubnetId
   }
 }
 

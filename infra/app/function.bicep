@@ -10,6 +10,7 @@ param appSettings object = {}
 param keyVaultName string
 param serviceName string = 'function'
 param storageAccountName string
+param virtualNetworkSubnetId string
 
 module function '../core/host/functions.bicep' = {
   name: '${serviceName}-function'
@@ -27,6 +28,7 @@ module function '../core/host/functions.bicep' = {
     runtimeVersion: '8.0'
     storageAccountName: storageAccountName
     scmDoBuildDuringDeployment: false
+    virtualNetworkSubnetId: virtualNetworkSubnetId
   }
 }
 

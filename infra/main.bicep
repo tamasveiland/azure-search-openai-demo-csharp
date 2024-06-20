@@ -419,8 +419,8 @@ module appServicePlan './core/host/appserviceplan.bicep' = {
     location: location
     tags: updatedTags
     sku: {
-      name: 'Y1'
-      tier: 'Dynamic'
+      name: 'EP1' //'Y1'
+      tier: 'ElasticPremium' //'Dynamic'
     }
   }
 }
@@ -451,6 +451,7 @@ module function './app/function.bicep' = {
       AZURE_COMPUTER_VISION_ENDPOINT: useVision ? computerVision.outputs.endpoint : ''
       OPENAI_API_KEY: useAOAI ? '' : openAIApiKey
     }
+    virtualNetworkSubnetId: virtualNetwork.outputs.subnet2Id
   }
 }
 
