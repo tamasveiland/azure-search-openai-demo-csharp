@@ -7,6 +7,8 @@ param kind string = ''
 param reserved bool = true
 param sku object
 
+param maxElasticWorkerCount int = 1
+
 resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: name
   location: location
@@ -15,6 +17,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   kind: kind
   properties: {
     reserved: reserved
+    maximumElasticWorkerCount: maxElasticWorkerCount
   }
 }
 

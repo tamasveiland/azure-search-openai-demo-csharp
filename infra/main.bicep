@@ -422,6 +422,8 @@ module appServicePlan './core/host/appserviceplan.bicep' = {
       name: 'EP1' //'Y1'
       tier: 'ElasticPremium' //'Dynamic'
     }
+    kind: 'elastic'
+    maxElasticWorkerCount: 1
   }
 }
 
