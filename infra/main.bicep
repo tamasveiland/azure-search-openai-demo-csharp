@@ -568,6 +568,7 @@ module searchService 'core/search/search-services.bicep' = {
       name: searchServiceSkuName
     }
     semanticSearch: 'free'
+    publicNetworkAccess: 'disabled'
     privateEndpoints: [
       {
         privateDnsZoneResourceIds: [
