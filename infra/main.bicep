@@ -212,7 +212,7 @@ module keyVault 'core/security/keyvault.bicep' = {
   name: 'keyvault'
   scope: keyVaultResourceGroup
   params: {
-    name: !empty(keyVaultName) ? keyVaultName : '${abbrs.keyVaultVaults}${resourceToken}-1'
+    name: !empty(keyVaultName) ? keyVaultName : '${abbrs.keyVaultVaults}${resourceToken}-2'
     location: keyVaultResourceGroupLocation
     tags: updatedTags
     principalId: principalId
